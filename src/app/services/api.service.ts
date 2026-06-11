@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface Game {
   id: string;
@@ -47,7 +48,7 @@ export interface Lobby {
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

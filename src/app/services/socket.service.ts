@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private socket: Socket | null = null;
-  private url = 'http://localhost:3000';
+  private url = environment.socketUrl;
 
   private roomCreatedSource = new Subject<any>();
   private roomUpdatedSource = new Subject<any>();

@@ -438,8 +438,8 @@ export class PlayComponent implements OnInit, AfterViewInit, OnDestroy {
     // Read local gamer profile and trigger sync if PvP
     this.api.getProfile().subscribe(profile => {
       this.profile = profile;
-      if (this.isPvP) {
-        this.socketService.syncRoom(this.roomId, profile.gamerTag);
+      if (this.isPvP && this.role) {
+        this.socketService.syncRoom(this.roomId, profile.gamerTag, this.role);
       }
     });
   }
@@ -556,9 +556,9 @@ export class PlayComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private requestRoomSync() {
-    if (!this.isPvP || !this.roomId) return;
+    if (!this.isPvP || !this.roomId || !this.role) return;
     const playerName = this.profile?.gamerTag || this.getLocalGamerTag();
-    this.socketService.syncRoom(this.roomId, playerName);
+    this.socketService.syncRoom(this.roomId, playerName, this.role);
   }
 
   private mapRoomNumbers(numbers: any[]): CanvasNumber[] {

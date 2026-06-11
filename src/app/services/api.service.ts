@@ -107,56 +107,46 @@ export class ApiService {
     );
   }
 
+  private createDefaultProfile(): GamerProfile {
+    const randId = Math.floor(1000 + Math.random() * 9000);
+    return {
+      gamerTag: `Người chơi #${randId}`,
+      avatar: 'avatar_neon_bot',
+      level: 1,
+      xp: 0,
+      xpNextLevel: 1000,
+      theme: 'dark-neon',
+      soundEnabled: true,
+      notificationsEnabled: false
+    };
+  }
+
+  private readLocalProfile(): GamerProfile | null {
+    const local = localStorage.getItem('gamer_profile');
+    if (!local) return null;
+    try {
+      return JSON.parse(local);
+    } catch {
+      return null;
+    }
+  }
+
+  private saveLocalProfile(profile: GamerProfile): GamerProfile {
+    localStorage.setItem('gamer_profile', JSON.stringify(profile));
+    return profile;
+  }
+
+  // Profile is stored per device in localStorage (not shared globally on server)
   getProfile(): Observable<GamerProfile> {
-    return this.http.get<GamerProfile>(`${this.baseUrl}/profile`).pipe(
-      tap(profile => {
-        localStorage.setItem('gamer_profile', JSON.stringify(profile));
-      }),
-      catchError(err => {
-        console.warn('Failed to fetch profile from server, using local fallback', err);
-        const local = localStorage.getItem('gamer_profile');
-        if (local) {
-          return of(JSON.parse(local));
-        }
-        const randId = Math.floor(1000 + Math.random() * 9000);
-        const guest: GamerProfile = {
-          gamerTag: `Người chơi #${randId}`,
-          avatar: 'avatar_neon_bot',
-          level: 1,
-          xp: 0,
-          xpNextLevel: 1000,
-          theme: 'dark-neon',
-          soundEnabled: true,
-          notificationsEnabled: false
-        };
-        localStorage.setItem('gamer_profile', JSON.stringify(guest));
-        return of(guest);
-      })
-    );
+    const existing = this.readLocalProfile();
+    if (existing) {
+      return of(existing);
+    }
+    return of(this.saveLocalProfile(this.createDefaultProfile()));
   }
 
   updateProfile(profile: Partial<GamerProfile>): Observable<GamerProfile> {
-    return this.http.put<GamerProfile>(`${this.baseUrl}/profile`, profile).pipe(
-      tap(updated => {
-        localStorage.setItem('gamer_profile', JSON.stringify(updated));
-      }),
-      catchError(err => {
-        console.warn('Failed to update profile on server, saving locally', err);
-        const local = localStorage.getItem('gamer_profile');
-        let current: GamerProfile = local ? JSON.parse(local) : {
-          gamerTag: `Người chơi #${Math.floor(1000 + Math.random() * 9000)}`,
-          avatar: 'avatar_neon_bot',
-          level: 1,
-          xp: 0,
-          xpNextLevel: 1000,
-          theme: 'dark-neon',
-          soundEnabled: true,
-          notificationsEnabled: false
-        };
-        current = { ...current, ...profile };
-        localStorage.setItem('gamer_profile', JSON.stringify(current));
-        return of(current);
-      })
-    );
+    const current = this.readLocalProfile() ?? this.createDefaultProfile();
+    return of(this.saveLocalProfile({ ...current, ...profile }));
   }
 }

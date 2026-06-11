@@ -72,9 +72,9 @@ export class SocketService {
     this.socket?.emit('joinRoom', { roomId, guestName });
   }
 
-  syncRoom(roomId: string, playerName: string) {
+  syncRoom(roomId: string, playerName: string, role: 'host' | 'guest') {
     this.connect();
-    const payload = { roomId, playerName };
+    const payload = { roomId, playerName, role };
     if (this.socket?.connected) {
       this.socket.emit('syncRoom', payload);
     } else {

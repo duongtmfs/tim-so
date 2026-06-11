@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;700&family=Permanent+Marker&family=Geist:wght@400;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+  /* Color System - Sketch Paper & Highlighter Theme */
+  --background: #f9f6f0;      /* Warm white paper texture */
+  --ink-dark: #1e293b;        /* Dark slate ink */
+  --ink-light: #64748b;
+  --surface: #ffffff;
+  
+  /* Highlighter Accent Markers */
+  --primary: #2563eb;         /* Blue Marker - Player A */
+  --primary-highlighter: rgba(37, 99, 235, 0.25);
+  
+  --secondary: #dc2626;       /* Red Marker - Player B / Opponent */
+  --secondary-highlighter: rgba(220, 38, 38, 0.25);
+  
+  --tertiary: #16a34a;        /* Green Marker - Success */
+  --tertiary-highlighter: rgba(22, 163, 74, 0.25);
+  
+  --hint-highlighter: rgba(253, 224, 71, 0.75); /* Yellow highlighter */
+
+  --error: #ef4444;
+  --error-highlighter: rgba(239, 68, 68, 0.25);
+
+  /* Fonts */
+  --font-sans: 'Architects Daughter', cursive;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Handwritten Fonts */
+  --font-sketch: 'Permanent Marker', cursive;
+  --font-marker: 'Permanent Marker', cursive;
+  --font-organic: 'Caveat', cursive;
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--ink-dark);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Grid-Paper Texture Background (Level 0) */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Typography Utility Classes */
+.display-lg {
+  font-family: var(--font-sans);
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.headline-md {
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.body-base {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.stats-xl {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.label-mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Handwritten Typography */
+.handwritten-text {
+  font-family: var(--font-sketch);
+}
+.font-marker {
+  font-family: var(--font-marker);
+}
+.font-organic {
+  font-family: var(--font-organic);
+}
+
+/* Sketch/Doodle Borders & Paper Panels (Level 1 Surface) */
+.paper-panel {
+  background: var(--surface);
+  border: 3px solid var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel {
+  /* Retained for routing consistency, alias to paper-panel */
+  composes: paper-panel;
+  background: var(--surface);
+  border: 3px solid var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.sketch-border {
+  border: 3px solid var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+.sketch-border-dashed {
+  border: 3px dashed var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+}
+
+/* Sticky Note Widget */
+.sticky-note {
+  background: #fef08a; /* Soft yellow sticky note */
+  border: 2px solid var(--ink-dark);
+  border-radius: 2px;
+  box-shadow: 3px 6px 15px rgba(0,0,0,0.12);
+  transform: rotate(-1.5deg);
+  position: relative;
+}
+
+.sticky-note::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.05) 100%);
+  border-bottom-left-radius: 4px;
+  box-shadow: -2px 2px 4px rgba(0,0,0,0.08);
+}
+
+/* Doodle Divider lines */
+.doodle-line {
+  background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,2 Q50,4 100,2 T200,2 T300,2 T400,2 T500,2' fill='none' stroke='%231e293b' stroke-width='2'/%3E%3C/svg%3E");
+  height: 4px;
+  width: 100%;
+}
+
+/* Doodle Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-marker);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  border: 2px solid var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  cursor: pointer;
+  background-color: var(--surface);
+  color: var(--ink-dark);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 16px;
+  outline: none;
+  box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+}
+
+.btn:hover {
+  transform: scale(1.03) rotate(0.5deg);
+  background-color: #f1f5f9;
+}
+
+.btn:active {
+  transform: scale(0.97) rotate(-0.5deg);
+  box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+}
+
+.btn-primary {
+  background-color: var(--ink-dark);
+  color: var(--background);
+  box-shadow: 3px 3px 0px 0px rgba(0,0,0,0.15);
+}
+
+.btn-primary:hover {
+  background-color: #334155;
+}
+
+.btn-secondary {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #991b1b;
+}
+
+.btn-secondary:hover {
+  background-color: #fecaca;
+}
+
+.btn-ghost-primary {
+  background: rgba(77, 142, 255, 0.08);
+  color: #1d4ed8;
+  border: 2px solid #1d4ed8;
+}
+
+.btn-ghost-primary:hover {
+  background: rgba(77, 142, 255, 0.15);
+}
+
+.btn-ghost-secondary {
+  background: rgba(251, 113, 133, 0.08);
+  color: #be123c;
+  border: 2px solid #be123c;
+}
+
+.btn-ghost-secondary:hover {
+  background: rgba(251, 113, 133, 0.15);
+}
+
+/* Inputs */
+.input-text {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid var(--ink-dark);
+  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+  color: var(--ink-dark);
+  font-family: var(--font-sketch);
+  font-size: 18px;
+  padding: 10px 14px;
+  width: 100%;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-text:focus {
+  box-shadow: 0px 0px 8px rgba(77, 142, 255, 0.5);
+  background-color: #ffffff;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-light);
+  border: 2px solid var(--background);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-dark);
+}
+
+/* Scribble/Shake animation */
+@keyframes scribble {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(0.5px, 0.5px) rotate(0.2deg); }
+  50% { transform: translate(-0.5px, 0px) rotate(-0.2deg); }
+  75% { transform: translate(0.5px, -0.5px) rotate(0deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.scribble-anim {
+  animation: scribble 0.25s infinite ease-in-out;
+}
+
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.02) 100%);
+  pointer-events: none;
+}
